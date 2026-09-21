@@ -2,28 +2,116 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+  <!--
+    ╔══════════════════════════════════════════════════╗
+    ║   🌻  ¿POR QUÉ TAN SAPA, MUJER??  🌻              ║
+    ║   ✨  NO LE VEAS UNA EXPLICACIÓN A LA MAGIA  ✨    ║
+    ╚══════════════════════════════════════════════════╝
+  -->
+  <script>
+    // 🌻 Mensaje para quien abra la consola 🌻
+    console.log("%c🌻 ¿POR QUÉ TAN SAPA, MUJER?? 🌻", "font-size:28px;font-weight:bold;color:#ffd700;text-shadow:0 0 8px #ffc400");
+    console.log("%c✨ No le veas una explicación a la magia ✨", "font-size:20px;color:#fffbe6;text-shadow:0 0 6px #ffc400");
+  </script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/main.css" />
-    <link rel="icon" href="img/flowers.png" type="image/x-icon" />
+    <link rel="icon" href="img/flor1.png" type="image/x-icon" />
     <title>Flores Amarillas</title>
     <style>
-      /* Texto flotante */
+      /* Texto flotante: queda centrado y justo encima de la flor más alta
+         (anim.js calcula "bottom" midiendo las flores; 72vh es solo el valor inicial) */
       #lyrics {
         font-size: 28px;
         font-family: "Arial Narrow", Arial, sans-serif;
         color: white;
-        position: absolute;
-        margin-bottom: 20%;
-        z-index: 1;
+        position: fixed;
+        left: 50%;
+        bottom: 72vh;
+        transform: translateX(-50%);
+        width: 90vw;
+        margin: 0;
+        z-index: 5;
         font-weight: bold;
         letter-spacing: 4px;
+        text-align: center;
+        line-height: 1.5;
       }
       @media only screen and (max-width: 600px) {
         #lyrics {
-          font-size: 14px;
-          margin-bottom: 530px;
-          letter-spacing: 3px;
+          font-size: 15px;
+          letter-spacing: 2px;
+        }
+      }
+
+      /* Gatito: anim.js le da la altura y lo pone encima de la flor más alta */
+      #gatito {
+        position: fixed;
+        left: 50%;
+        bottom: 60vh;
+        height: 160px;
+        width: auto;
+        transform: translateX(-50%);
+        opacity: 0;
+        z-index: 6;
+        pointer-events: none;
+        /* el contorno dorado ya viene dibujado dentro de gatito.webp */
+      }
+      #gatito.listo {
+        animation: gatitoEntra 0.8s ease-out forwards;
+      }
+      #gatito.listo.oculto {
+        animation: gatitoSale 0.8s ease-in forwards;
+      }
+      @keyframes gatitoEntra {
+        from { opacity: 0; transform: translateX(-50%) scale(0.6); }
+        to { opacity: 1; transform: translateX(-50%) scale(1); }
+      }
+      @keyframes gatitoSale {
+        from { opacity: 1; transform: translateX(-50%) scale(1); }
+        to { opacity: 0; transform: translateX(-50%) translateY(-30px) scale(0.6); }
+      }
+
+      /* Animación de la letra: entrada por palabra, ola por letra y borde dorado */
+      #lyrics {
+        transition: opacity 0.7s ease, filter 0.7s ease;
+      }
+      #lyrics .palabra {
+        display: inline-block;
+        white-space: nowrap;
+        opacity: 0;
+        animation: entrarPalabra 0.6s ease-out forwards;
+      }
+      #lyrics .letra {
+        display: inline-block;
+        color: #fffbe6;
+        -webkit-text-stroke: 1px #ffc400;
+        animation: ola 1.6s ease-in-out infinite, brilloDorado 2.4s ease-in-out infinite;
+      }
+      #lyrics.saliendo {
+        opacity: 0;
+        filter: blur(6px);
+      }
+      @keyframes entrarPalabra {
+        0% { opacity: 0; transform: translateY(20px) scale(0.8); filter: blur(6px); }
+        60% { opacity: 1; transform: translateY(-4px) scale(1.08); filter: blur(0); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      @keyframes ola {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+      @keyframes brilloDorado {
+        0%, 100% {
+          text-shadow: 0 0 4px #ffd700, 0 0 10px rgba(255, 200, 0, 0.6);
+        }
+        50% {
+          text-shadow: 0 0 6px #fff3b0, 0 0 16px #ffd700, 0 0 30px rgba(255, 170, 0, 0.9);
+        }
+      }
+      @media only screen and (max-width: 600px) {
+        #lyrics .letra {
+          -webkit-text-stroke: 0.5px #ffc400;
         }
       }
 
@@ -35,13 +123,25 @@
         font-weight: bold;
         letter-spacing: 10px;
         opacity: 0;
-        animation: fadeIn 3s ease-in-out forwards;
+        animation: fadeIn 3s ease-in-out forwards, brilloDorado 2.4s ease-in-out infinite;
         text-align: center;
         z-index: 2;
+        /* borde dorado igual que la letra de la canción */
+        color: #fffbe6;
+        -webkit-text-stroke: 1px #ffc400;
+      }
+      @media only screen and (max-width: 600px) {
+        .titulo {
+          -webkit-text-stroke: 0.6px #ffc400;
+        }
       }
       @keyframes fadeIn {
         from { opacity: 0; }
         to { opacity: 1; }
+      }
+      @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
       }
 
       /* Lluvia de frases */
@@ -58,10 +158,12 @@
       .love-phrase {
         position: absolute;
         top: -5vh;
-        color: #ffeb3b;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        color: #fffbe6;
+        -webkit-text-stroke: 0.6px #ffc400;
+        text-shadow: 0 0 4px #ffd700, 0 0 10px rgba(255, 200, 0, 0.6);
         font-family: 'Poppins', cursive;
-        font-weight: 500;
+        font-weight: 600;
+        border: 1px solid rgba(255, 196, 0, 0.5);
         white-space: nowrap;
         animation: fall linear forwards;
         padding: 5px 10px;
@@ -82,19 +184,144 @@
           padding: 3px 8px;
         }
       }
+
+      /* Ventanita "¿Sale su valo?": pequeña, transparente y abajo para no tapar las flores */
+      .ventanita {
+        position: fixed;
+        left: 50%;
+        bottom: 16px;
+        width: min(340px, 88vw);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 36px 10px 12px;
+        box-sizing: border-box;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 196, 0, 0.7);
+        background: rgba(20, 20, 10, 0.35);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        box-shadow: 0 0 18px rgba(255, 200, 0, 0.35);
+        z-index: 20;
+        opacity: 0;
+        transform: translate(-50%, 40px);
+        pointer-events: none;
+      }
+      .ventanita.visible {
+        pointer-events: auto;
+        animation: ventanitaEntra 0.7s ease-out forwards;
+      }
+      .ventanita.visible.saliendo {
+        pointer-events: none;
+        animation: ventanitaSale 0.6s ease-in forwards;
+      }
+      .ventanita img {
+        width: 90px;
+        height: auto;
+        flex-shrink: 0;
+        animation: ola 1.6s ease-in-out infinite;
+      }
+      .ventanita p {
+        margin: 0;
+        font-family: 'Poppins', "Arial Narrow", Arial, sans-serif;
+        font-size: 20px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        color: #fffbe6;
+        -webkit-text-stroke: 0.6px #ffc400;
+        animation: brilloDorado 2.4s ease-in-out infinite;
+      }
+      .ventanita .cerrar {
+        position: absolute;
+        top: 6px;
+        right: 8px;
+        border: none;
+        background: none;
+        color: #ffd700;
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+      }
+      @keyframes ventanitaEntra {
+        from { opacity: 0; transform: translate(-50%, 40px); }
+        to { opacity: 1; transform: translate(-50%, 0); }
+      }
+      @keyframes ventanitaSale {
+        from { opacity: 1; transform: translate(-50%, 0); }
+        to { opacity: 0; transform: translate(-50%, 40px); }
+      }
+      /* botones Sí / No */
+      .ventanita .opciones {
+        display: flex;
+        gap: 10px;
+        margin-top: 8px;
+      }
+      .ventanita .opciones button {
+        font-family: 'Poppins', "Arial Narrow", Arial, sans-serif;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 6px 20px;
+        border-radius: 999px;
+        border: 1px solid #ffc400;
+        background: rgba(255, 196, 0, 0.15);
+        color: #fffbe6;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(255, 200, 0, 0.35);
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+      .ventanita .opciones button:hover {
+        background: rgba(255, 196, 0, 0.35);
+        transform: scale(1.06);
+      }
+      .ventanita .opciones .si {
+        background: #ffc400;
+        color: #3a2a00;
+      }
+      @media only screen and (max-width: 600px) {
+        .ventanita img { width: 70px; }
+        .ventanita p { font-size: 17px; }
+      }
     </style>
   </head>
 
   <body class="container">
+  <!--
+    ╔══════════════════════════════════════════════════╗
+    ║   🌻  ¿POR QUÉ TAN SAPA, MUJER??  🌻              ║
+    ║   ✨  NO LE VEAS UNA EXPLICACIÓN A LA MAGIA  ✨    ║
+    ╚══════════════════════════════════════════════════╝
+  -->
     <!-- Música de fondo -->
-    <audio src="sound/ChristianBasso&HaienQiu-Flowers.mp3" autoplay loop></audio>
+    <audio src="sound/floricienta--flores-amarillas-letra.mp3" autoplay loop></audio>
 
     <!-- Texto flotante -->
     <div id="lyrics"></div>
+    <!-- Gatito bailando encima de las flores (se va cuando empieza la letra) -->
+    <img id="gatito" src="img/gatito.webp?v=2" alt="Gatito bailando" />
     <h1 class="titulo">
-      Flores amarillas para mi niña de ojos bonitos <br /><br />
-      Gracias por iluminar mis días son tu hermosa sonrisa.<br /><br />
+      Flores amarillas para la princesa <br /><br />
+      Ponele bueno eres una gran persona.<br /><br />
     </h1>
+
+    <!-- Ventanita que aparece con "Con sus flores amarillas" -->
+    <div id="ventanita" class="ventanita" role="status">
+      <button class="cerrar" aria-label="Cerrar">&times;</button>
+      <img src="img/emoji-flores.png" alt="Emoji con flores amarillas" />
+      <p>¿Sale su valo? 🌻</p>
+    </div>
+
+    <!-- Segunda ventanita: sale la segunda vez que se canta "Con sus flores amarillas" -->
+    <div id="ventanitaPregunta" class="ventanita" role="dialog" aria-label="¿Sí o no?">
+      <button class="cerrar" aria-label="Cerrar">&times;</button>
+      <img src="img/gato-elegante.png" alt="Gato elegante con traje" />
+      <div>
+        <p class="mensaje">¿Sí o no? 🌻</p>
+        <div class="opciones">
+          <button class="si">Sí</button>
+          <button class="no">No</button>
+        </div>
+      </div>
+    </div>
 
     <!-- Lluvia de frases -->
     <div id="loveRain"></div>
@@ -418,16 +645,16 @@
     <script>
       // Frases de amor
       const frases = [
-        "Eres mi sol en días grises 🌞",
+        "Eres un sol ☀️",
         "Gracias por existir 💛",
         "Tu sonrisa ilumina todo ✨",
-        "Eres mi niña hermosa🌻",
-        "Que ojitos mas hermosos tienes 💕",
-        "te quiero muchisisisimo 💜",
+        "Eres una mujer bien hermosa🌻",
+        "se te quiere muchisisimo 💜",
         "Tienes una hermosa sonrisa 🥰",
-        "hola mi amor a cuanto el kilo de besos 😘",
-        "Quiero hacerte feliz 😍",
-        "Te quiero profe de mate 💖",
+        "Dale leona vos podes con todo 💪",
+        "Eres la mejor 💖",
+        "sos una gran persona y te mereces lo mejor 💛",
+        "Ponele bueno 💛",
       ];
 
       function lluviaFrases() {

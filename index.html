@@ -3,13 +3,122 @@
 
 <head>
   <meta charset="UTF-8">
+  <!--
+    ╔══════════════════════════════════════════════════╗
+    ║   🌻  ¿POR QUÉ TAN SAPA, MUJER??  🌻              ║
+    ║   ✨  NO LE VEAS UNA EXPLICACIÓN A LA MAGIA  ✨    ║
+    ╚══════════════════════════════════════════════════╝
+  -->
+  <script>
+    // 🌻 Mensaje para quien abra la consola 🌻
+    console.log("%c🌻 ¿POR QUÉ TAN SAPA, MUJER?? 🌻", "font-size:28px;font-weight:bold;color:#ffd700;text-shadow:0 0 8px #ffc400");
+    console.log("%c✨ No le veas una explicación a la magia ✨", "font-size:20px;color:#fffbe6;text-shadow:0 0 6px #ffc400");
+  </script>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="icon" href="img/flowers.png" type="image/x-icon">
+  <link rel="icon" href="img/flor1.png" type="image/x-icon">
   <title>Flowers</title>
   <style>
+    /* fondo negro con un leve resplandor al centro; la imagen va aparte en body::before */
+    body {
+      background:
+        radial-gradient(ellipse at center, #1c1a14 0%, #0a0a0a 55%, #000 100%);
+      min-height: 100vh;
+      height: auto;
+      margin: 0;
+      justify-content: flex-start;
+    }
+    /* Imagen de fondo en alta calidad (1167x1596) con contorno dorado.
+       Pantallas altas (celular / ventana angosta): imagen arriba y tarjeta abajo.
+       Pantallas anchas (computador): imagen a la izquierda y tarjeta a la derecha. */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 1vh;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      width: 94vw;
+      height: 67vh;
+      background: url("img/fondo-hd.webp") center top / contain no-repeat;
+      filter: drop-shadow(0 0 1.5px #ffc400) drop-shadow(0 0 1.5px #ffc400)
+        drop-shadow(0 0 14px rgba(255, 200, 0, 0.55));
+      z-index: -1;
+      pointer-events: none;
+    }
 
+    /* tarjeta semitransparente con los corazones, el texto y el botón */
+    .tarjeta {
+      position: relative;
+      z-index: 15; /* encima de la lluvia (10): las imágenes pasan por detrás */
+      /* justo debajo de la imagen (alto 67vh, o 129vw si la limita el ancho), montada 60px */
+      margin-top: calc(min(68vh, 129vw) - 60px);
+      width: min(520px, 90vw);
+      box-sizing: border-box;
+      padding: 16px 24px 24px;
+      text-align: center;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 196, 0, 0.75);
+      background: rgba(20, 15, 0, 0.5);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      box-shadow: 0 0 24px rgba(255, 200, 0, 0.3), inset 0 0 18px rgba(255, 200, 0, 0.12);
+    }
+
+    @media (min-aspect-ratio: 4/3) {
+      body::before {
+        top: 4vh;
+        left: 2vw;
+        right: auto;
+        margin: 0;
+        width: 53vw;
+        height: 92vh;
+        background-position: center;
+      }
+      .tarjeta {
+        position: fixed;
+        top: 50%;
+        left: 76vw;
+        margin: 0;
+        width: min(480px, 40vw);
+        transform: translate(-50%, -50%);
+      }
+      .gato {
+        left: 76vw !important;
+      }
+    }
+    .tarjeta .greetings {
+      margin-top: 0;
+    }
+
+    /* texto amarillo con borde dorado, igual que las letras de la canción */
+    .description span {
+      color: #ffe44d;
+      -webkit-text-stroke: 0.5px #ffc400;
+      font-weight: 700;
+      animation: brilloDorado 2.4s ease-in-out infinite;
+    }
+    @keyframes brilloDorado {
+      0%, 100% {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 6px #ffd700, 0 0 12px rgba(255, 200, 0, 0.5);
+      }
+      50% {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 8px #fff3b0, 0 0 18px #ffd700, 0 0 30px rgba(255, 170, 0, 0.7);
+      }
+    }
+
+    /* gif del gatito: pegado abajo de la pantalla para no tapar el fondo */
+    .gato {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(260px, 55vw, 30vh);
+      height: auto;
+      z-index: 11;
+      /* el contorno dorado ya viene dibujado dentro de gato.webp */
+    }
 
     .greetings {
       margin-top: 50px;
@@ -40,7 +149,7 @@
       width: 70px;
       animation-name: caer;
       animation-timing-function: linear;
-      animation-fill-mode: forwards; /* 👈 asegura que termine abajo */
+      animation-fill-mode: forwards; /*  asegura que termine abajo */
     }
 
     @keyframes caer {
@@ -49,7 +158,7 @@
         opacity: 1;
       }
       100% {
-        transform: translateY(110vh) rotate(360deg); /* 👈 siempre baja más que la pantalla */
+        transform: translateY(110vh) rotate(360deg); /*  siempre baja más que la pantalla */
         opacity: 0;
       }
     }
@@ -57,33 +166,42 @@
 </head>
 
 <body>
-  <div class="greetings">
-    <span>💛</span>
-    <span>💜</span>
-    <span>💛</span>
+  <!--
+    ╔══════════════════════════════════════════════════╗
+    ║   🌻  ¿POR QUÉ TAN SAPA, MUJER??  🌻              ║
+    ║   ✨  NO LE VEAS UNA EXPLICACIÓN A LA MAGIA  ✨    ║
+    ╚══════════════════════════════════════════════════╝
+  -->
+  <div class="tarjeta">
+    <div class="greetings">
+      <span>💛</span>
+      <span>💜</span>
+      <span>💛</span>
+    </div>
+    <div class="description">
+      <span>Sus buenas flores amarillas para la princesa </span>
+    </div>
+    <div class="button">
+      <button class="botones">
+        <a href="flower.html" style="color: #fff; text-decoration:none;">💜APACHURALE AQUÍ💜</a>
+      </button>
+    </div>
   </div>
-  <div class="description">
-    <span>Esto es para ti mi niña de ojos bonitos </span>
-  </div>
-  <div class="button">
-    <button class="botones">
-      <a href="flower.html" style="color: #fff; text-decoration:none;">💜CLICK AQUÍ💜</a>
-    </button>
-  </div>
+
+  <img class="gato" src="img/gato.webp?v=3" alt="Gatito">
 
   <!-- contenedor de lluvia -->
   <div id="loveRain"></div>
 
    <script>
     const imagenes = [
-      "img/pingu1.png",
-      "img/pingu2.png",
-      "img/pingu3.png",
-      "img/pingu4.png",
-      "img/pingu5.png",
-      "img/pingu6.png",
       "img/pingu7.png",
-      "img/pingu8.png",
+      "img/flor1.png",
+      "img/flor2.png",
+      "img/flor3.png",
+      "img/corazon1.png",
+      "img/corazon2.png",
+      "img/sol.png",
     ]; // 👉 tus imágenes aquí
 
     function lluviaFotos() {
@@ -103,7 +221,7 @@
       }
     }
 
-    setInterval(lluviaFotos, 2000);
+    setInterval(lluviaFotos, 700);
   </script>
 </body>
 
